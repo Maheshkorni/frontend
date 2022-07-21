@@ -54,7 +54,7 @@ export default class Login extends Component{
             {
               console.log(result);
               if(result.data=='1'){
-                alert("Valid");
+                alert("Login Successful");
                 
 
                 window.location="/Dashboard/"+id;

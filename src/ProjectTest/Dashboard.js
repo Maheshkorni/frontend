@@ -22,7 +22,7 @@ export default class Dashboard extends React.Component
             <Link to="/ApplyLeave">ApplyLeave</Link>
             <button className='Logout' onClick={()=>{sessionStorage.clear();window.location="/"}}>Logout</button>
             </div>
-            <h1>Dashboard Page {sessionStorage.getItem("name")}</h1>
+            <h1>Welcome back {sessionStorage.getItem("name")}</h1>
            
             </body>
            
