@@ -1,17 +1,17 @@
 import React  from "react";
 import '/node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './Welcome.css'
-import {BrowserRouter,Routes,Route,Link, useNavigate, useHref}  from 'react-router-dom';
-import ApplyLeave from "./ApplyLeave";
-import Login from "./Login";
-import ReactDOM from 'react-dom';  
+import {Link}  from 'react-router-dom';
+
+
+
 
 export default class Welcome extends React.Component{
     
     
-    constructor(props)
+    constructor()
     {
-        super(props);
+        super();
         this.state={
             Employees:[],
             employeeId:"",
@@ -23,10 +23,10 @@ export default class Welcome extends React.Component{
             leaveBalance:""
         }
         
-        
+        this.setter=this.setter.bind(this)
     }
     
-   
+  
     
     refreshList()
     {
@@ -34,12 +34,19 @@ export default class Welcome extends React.Component{
         fetch(url).then(response=>response.json()).then(result=>{
             this.setState({Employees:result})
         })
-        console.log(this.state.Employees)
+        
     }
     componentDidMount()
 {
     this.refreshList();
     
+}
+setter(e)
+{
+    sessionStorage.setItem("id",this.state.Employees[e.target.id].employeeId)
+    sessionStorage.setItem("name",this.state.Employees[e.target.id].fullName)
+    console.log(sessionStorage.getItem("id"))
+
 }
 
 
@@ -47,7 +54,8 @@ render()
     {
         const {Employees}=this.state
         
-        return(<>
+        return(<div>
+            
     
                 <div className="Welcome">
             <h2>Employee LIst</h2>
@@ -68,12 +76,11 @@ render()
 
                     Employees.map((a,index) =>
                         <tr>
-                        <td>{index+1}</td>
-                        <td>{a.employeeId}</td>
-                        <td>{a.fullName}</td>
-                        <td>{a.department}</td>
-                    
-                        <td><Link to={"/Login"}><button className="btn btn-dark" >Login</button></Link></td>
+                        <td >{index+1}</td>
+                        <td >{a.employeeId}</td>
+                        <td >{a.fullName}</td>
+                        <td >{a.department}</td>
+                        <td><Link to={{pathname:"/Login/"+a.employeeId }} ><button id={index} className="button1" onClick={e=>this.setter(e)}  >Login</button></Link></td>
                          
                         </tr>
                         )
@@ -90,6 +97,6 @@ render()
         
 
        
-        </>)
+        </div>)
     }
 }

@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react'
 import Message from "./Message";
 import StateEx from './AfternoonPracc/StateEx';
 import Hiding from './AfternoonPracc/Hide&show';
@@ -9,22 +10,39 @@ import App2 from './ProjectTest/App2';
 import Welcome from './ProjectTest/Welcome';
 import { Routes,Route, BrowserRouter } from 'react-router-dom';
 import Login from './ProjectTest/Login';
-import ApplyLeave from './ProjectTest/ApplyLeave';
+import ApplyLeave from './ProjectTest/Dashboard/ApplyLeave';
+import Dashboard from './ProjectTest/Dashboard';
+import EmployeeDetails from './ProjectTest/Dashboard/EmployeeDetails'
+import Showempleaves from './ProjectTest/Dashboard/Showempleaves'
+import ShowManagerDetails from './ProjectTest/Dashboard/ShowManagerDetails'
+import ShowMyempLeaves from './ProjectTest/Dashboard/ShowMyempLeaves'
 
-function App() {
-  return (
-    <div className="App">
+
+export default class App extends React.Component{
+  render(){
+
+    return(
       <BrowserRouter>
 
+      <div >
       
       <Routes>
-        <Route path="/" element={<Welcome />}>Home</Route>
-        <Route path="/Login" element={<Login  />}>Login</Route>
+        <Route path="/" element={<Welcome/>}>Home</Route>
+        <Route path="/Login/:id" element={<Login />}>Login</Route>
         <Route path="/ApplyLeave" element={<ApplyLeave/>}>ApplyLeave</Route>
+        
+        <Route path="/DashBoard/:id" element={<Dashboard  />}>DashBoard</Route>
+        <Route path="/EmployeeDetails" element={<EmployeeDetails/>}>EmployeeDetails</Route>
+        <Route path="/ShowMyempLeaves" element={<ShowMyempLeaves/>}>ShowMyempLeaves</Route>
+        <Route path="/ShowManagerDetails" element={<ShowManagerDetails/>}>showManagerDetails</Route>
+        <Route path="/Showempleaves" element={<Showempleaves/>}>Showempleaves</Route>
       </Routes>
+      
+      </div>
       </BrowserRouter>
-    </div>
-  );
-}
 
-export default App;
+
+
+    )
+  }
+}
