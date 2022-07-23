@@ -15,55 +15,62 @@ export default class Login extends Component{
         this.state={
             employeeId:'',
             password:'',
-            errors: {
-                password: '',
-              }
+            passworderror:"",
+            employeeIderror:""
            
         }
         this.Handler=this.Handler.bind(this)
         this.Login=this.Login.bind(this)
         
     }
+    validate()
+    {
+        if(this.state.employeeId==="" || this.state.employeeId.length<4)
+        {
+            this.setState({employeeIderror:"Please Enter Valid Employee Id"});
+        }
+        else if (this.state.password==="" || this.state.password.length<7)
+        {
+            this.setState({passworderror:"Please Enter Valid Password"});
+        }
+        else{ return true}
+    }
     
     Handler(object,event)
     {
         this.setState(object)
-        let errors = this.state.errors;
-        const { name, value } = event.target;
-        switch (name) {
-      
-            case 'password': 
-              errors.password = 
-                value.length < 7
-                  ? 'Password must be at least 8 characters long!'
-                  : '';
-              break;
-            default:
-              break;
-          }
+        
     }
     Login(e)
     {
         e.preventDefault()
-        let id =sessionStorage.getItem("id")
-
+       
+       this.setState({passworderror:""});
+       this.setState({userIderror:""});
+       if(this.validate())
+       {
+        this.setState({employeeIderror:""});
         axios.post("http://localhost:18647/api/Crud",{
-            employeeId:id,
+            employeeId:this.state.employeeId,
             password:this.state.password
         }).then(result =>
             {
               console.log(result);
               if(result.data=='1'){
                 alert("Login Successful");
-                
+                sessionStorage.setItem("id",this.state.employeeId)
 
-                window.location="/Dashboard/"+id;
+                window.location="/Dashboard/"+this.state.employeeId;
               }
               else{
                 alert("InValid");
               }
        
             }).catch(error=>{alert(error)})
+
+       }
+
+       
 
     }
     
@@ -74,8 +81,9 @@ export default class Login extends Component{
        
        
         return(<>
-           
-           
+           <body className="backgrnd"  >
+
+           <div  style={{}}>
 
             <div className="Welcome1">
 
@@ -88,10 +96,10 @@ export default class Login extends Component{
             </div>
             <br></br>
             
-            <input type="text"  placeholder="Employee Id" name="userId" value={sessionStorage.getItem("id")}  onChange={(e) => this.Handler({ employeeId: e.target.value })} required/>
+            <input type="text"  placeholder="Employee Id" name="userId"   onChange={(e) => this.Handler({ employeeId: e.target.value })} required/>
+            <p style={{color:"red"}}>{this.state.employeeIderror}</p>
             <input type="password" placeholder="Password" name="password"  onChange={(e) => this.Handler({ password: e.target.value },e)} noValidate/>
-            {errors.password.length > 0 && 
-                <span className='error'>{errors.password}</span>}
+            <p style={{color:"red"}}>{this.state.passworderror}</p>
             <a href="#">Forgot your password?</a>
             <br></br>
             <button className="button1" type="submit" onClick={this.Login}>Log In</button>
@@ -105,7 +113,10 @@ export default class Login extends Component{
         </div>
     </div>
             
-        </div> </>
+        </div>
+        </div>
+        </body>
+         </>
 
         )
     }

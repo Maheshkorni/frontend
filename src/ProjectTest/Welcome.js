@@ -38,7 +38,11 @@ export default class Welcome extends React.Component{
     }
     componentDidMount()
 {
+    if( sessionStorage.getItem("check")=="True")
+    {
     this.refreshList();
+    }
+    else{ window.location="/"}
     
 }
 setter(e)
@@ -54,7 +58,9 @@ render()
     {
         const {Employees}=this.state
         
-        return(<div>
+        return(
+            <body className="bodystyle2">
+            <div>
             
     
                 <div className="Welcome">
@@ -66,7 +72,7 @@ render()
                 <td>EmployeeId</td>
                 <td>Employee Name</td>
                 <td>Department</td>
-                <td>Action</td>
+                
             </tr>
 
             </thead>
@@ -80,7 +86,7 @@ render()
                         <td >{a.employeeId}</td>
                         <td >{a.fullName}</td>
                         <td >{a.department}</td>
-                        <td><Link to={{pathname:"/Login/"+a.employeeId }} ><button id={index} className="button1" onClick={e=>this.setter(e)}  >Login</button></Link></td>
+                        
                          
                         </tr>
                         )
@@ -97,6 +103,8 @@ render()
         
 
        
-        </div>)
+        </div>
+        </body>
+        )
     }
 }

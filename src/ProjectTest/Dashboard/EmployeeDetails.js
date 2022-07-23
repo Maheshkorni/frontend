@@ -20,6 +20,8 @@ export default class EmployeeDetails extends React.Component
     }
     componentDidMount()
     {
+        if( sessionStorage.getItem("check")=="True")
+    {
         let id=sessionStorage.getItem("id")
         axios.get("http://localhost:18647/EmployeeDetails/"+id).then(
             response=>{this.setState({
@@ -32,6 +34,9 @@ export default class EmployeeDetails extends React.Component
                 'leaveBalance':response.data.leaveBalance
 
                                 })}).catch(error=>{alert("error")})
+    }
+    else{ window.location="/"}
+        
             
 
 
@@ -41,18 +46,39 @@ export default class EmployeeDetails extends React.Component
        
         return(
             <div>
-            <h1>EmployeeDetails Page </h1>
-            <div className="Welcome">
-            <div className="overlay-panel">
-           
-            <input value={this.state.fullName} disabled></input>
-            <input value={this.state.employeeId} disabled></input>
-            <input value={this.state.email} disabled></input>
-            <input value={this.state.phoneNumber} disabled></input>
-            <input value={this.state.dateJoined} disabled></input>
-            <input value={this.state.department} disabled></input>
+             <div className="container">
+            <div className="title">Employee Details</div>
+            <div className="content">
+                <form >
+                    <div className="user-details">
+                    <div className="input-box">
+                    <span className="details">Full Name</span>
+                    <input value={this.state.fullName} disabled></input>
+                    </div>
+                    <div className="input-box">
+                    <span className="details">Employee Id</span>
+                    <input value={this.state.employeeId} disabled></input>
+                    </div>
+                    <div className="input-box">
+                    <span className="details">Email</span>
+                    <input value={this.state.email} disabled></input>
+                    </div>
+                    <div className="input-box">
+                    <span className="details">Phone Number</span>
+                    <input value={this.state.phoneNumber} disabled></input>
+                    </div>
+                    <div className="input-box">
+                    <span className="details">Joining Date</span>
+                    <input value={this.state.dateJoined} disabled></input>
+                    </div>
+                    <div className="input-box">
+                    <span className="details">Department</span>
+                    <input value={this.state.department} disabled></input>
+                    </div>
+                    </div>
+
+                </form>
             </div>
-            
             </div>
             </div>)
     }

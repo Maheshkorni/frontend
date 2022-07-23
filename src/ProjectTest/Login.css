@@ -12,7 +12,6 @@
 	flex-direction: column;
 	font-family: 'Montserrat', sans-serif;
 	height: 100vh;
-	margin: -20px 0 50px;
 }
 
 .h1 {
@@ -88,7 +87,7 @@ input {
   .Welcome1{
 
     margin-top: 10%;
-    margin-left: 25%;
+    margin-left: 8%;
     background-color: #fff;
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -144,6 +143,20 @@ input {
     height: 100%;
     width: 50%;
   }
+  .overlay-panel-right {
+    margin-top: 10%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: top;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    right: 0;
+  }
   
   
   .overlay-right {
@@ -173,4 +186,130 @@ input {
     height: 100vh;
     margin: -20px 0 50px;
   }
+  .error{
+    color:red;
+  }
+  .cardtable{
+
+    margin-top: 10%;
+    margin-left: 6%;
+    background-color: #fff;
+	  border-radius: 10px;
+  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	position: center;
+	overflow: hidden;
+	width: 1350px;
+	max-width: 100%;
+	min-height: 500px;
+  }
+  .cardrow{
+
+    margin-top: 4%;
+    margin-left: 15%;
+    background-color: #fff;
+	  border-radius: 10px;
+  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	position: relative;
+	overflow: hidden;
+	width: 1000px;
+	max-width: 100%;
+	min-height: 200px;
+  }
+  .text td{
+    float: left;
+    color: #151515;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+ 
+  *{
+    box-sizing: border-box;
+  }
   
+  .table{
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table td,.table th{
+    padding:12px 15px;
+    border:1px solid #ddd;
+    text-align: center;
+    font-size:16px;
+  }
+  
+  .table th{
+    background-color: black;
+    color:#ffffff;
+  }
+  
+  .table tbody tr:nth-child(even){
+    background-color: #f5f5f5;
+  }
+  
+  /*responsive*/
+  
+  @media(max-width: 500px){
+    .table thead{
+      display: none;
+    }
+  
+    .table, .table tbody, .table tr, .table td{
+      display: block;
+      width: 100%;
+    }
+    .table tr{
+      margin-bottom:15px;
+    }
+    .table td{
+      text-align: right;
+      padding-left: 50%;
+      text-align: right;
+      position: relative;
+    }
+    .table td::before{
+      content: attr(data-label);
+      position: absolute;
+      left:0;
+      width: 50%;
+      padding-left:15px;
+      font-size:15px;
+      font-weight: bold;
+      text-align: left;
+    }
+  }
+  .textstyle {
+    text-align: center;
+    color: #999999;
+    font-family: arial, sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 1px;
+    }
+  .theadstyle{
+    color:#ffffff;
+    background-color: #151515;
+    font-weight: bold;
+    font-size: 40px;
+  }
+  .backgrnd{
+    
+    background-image:url("D:\Mahesh\React prj\firstapp\public\bg-01.jpg");
+    background-size: cover;
+    width:1600px;
+  }
+  .bodystyle2 {
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    background-image:url("D:\Mahesh\React prj\firstapp\public\bg-01.jpg");
+  }

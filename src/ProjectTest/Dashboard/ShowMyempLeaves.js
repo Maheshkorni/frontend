@@ -15,7 +15,8 @@ export default class ShowMyempLeaves extends React.Component
             appliedDate:"",
             status:"",
             reason:"",
-            leaveType:""         
+            leaveType:"",
+            managerComments:""         
         }
         this.setter=this.setter.bind(this)
     }
@@ -44,11 +45,12 @@ export default class ShowMyempLeaves extends React.Component
         
     }
     setter(a){
+        console.log(this.state.managerComments)
         console.log(this.state.Leave[a.target.id].leaveId)
         axios.post("http://localhost:18647/status",{
             leaveid:this.state.Leave[a.target.id].leaveId,
             employeeId:this.state.Leave[a.target.id].employeeId,
-            managerComments:this.state.Leave[a.target.id].managerComments,
+            managerComments:this.state.managerComments,
             status:"APPROVED"
         }).then(response=>{alert(response.data)}).catch(error=>{alert("error")})
         window.location.reload()
@@ -59,7 +61,7 @@ export default class ShowMyempLeaves extends React.Component
         axios.post("http://localhost:18647/status",{
             leaveid:this.state.Leave[a.target.id].leaveId,
             employeeId:this.state.Leave[a.target.id].employeeId,
-            managerComments:this.state.Leave[a.target.id].managerComments,
+            managerComments:this.state.managerComments,
             status:"DENIED"
         }).then(response=>{alert(response.data)}).catch(error=>{alert("error")})
         window.location.reload()
@@ -69,10 +71,12 @@ export default class ShowMyempLeaves extends React.Component
     {
         const {Leave}=this.state
         return(
-            <div>
-            <h1>Showempleaves Page</h1>
-            <table className="table table-hover">
-            <thead>
+            <body className="bodystyle2">
+            <div className="cardtable">
+            <br></br>
+            <h1 className="textstyle">Leave Requests</h1> <br></br>
+            <table className="table">
+            <thead className="theadstyle" >
             <tr>
             <td>Employee Id</td>
             <td>Start Date</td>
@@ -82,6 +86,8 @@ export default class ShowMyempLeaves extends React.Component
             <td>Leave Type</td>
             <td>Reason</td>
             <td>Actions</td>
+            <td>Actions</td>
+            <td>Comments</td>
             </tr>
             </thead>
             <tbody>
@@ -99,8 +105,10 @@ export default class ShowMyempLeaves extends React.Component
                     <td>{a.reason}</td>
                     <td><button id={index} className="button1" onClick={e=>this.setter(e)}>Approve</button></td>
                     <td><button id={index} className="button1" onClick={e=>this.deny(e)}>Deny</button></td>
+                    <td><input type="text" onChange={(e)=>{this.setState({managerComments:e.target.value})
+                    }}></input></td>
                     </tr>
-                    
+                   
                     )
                     
             }
@@ -109,7 +117,7 @@ export default class ShowMyempLeaves extends React.Component
             
             </table>
             </div>
-           
+            </body>
         )
     }
 }   

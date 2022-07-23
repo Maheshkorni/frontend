@@ -20,45 +20,61 @@ export default class Showempleaves extends React.Component
     }
     componentDidMount()
     {
-        let id=sessionStorage.getItem("id")
-        axios.get("http://localhost:18647/api/Leave/Showleaves/"+id).then(
-            response=>{this.setState({Leave:response.data})}
-        ).catch(error=>{alert("error")})
-
+        if( sessionStorage.getItem("check")=="True")
+        {
+            let id=sessionStorage.getItem("id")
+            axios.get("http://localhost:18647/api/Leave/Showleaves/"+id).then(
+                response=>{this.setState({Leave:response.data})}
+            ).catch(error=>{alert("error")})
+    
+        }
+        else{ window.location="/"}
+       
     }
     render()
     {
         const {Leave}=this.state
         return(
-            <div>
-            <h1>Showempleaves Page</h1>
-            <table className="table table-hover">
-            <thead>
-            <tr>
-            <td>Employee Id</td>
-            <td>Start Date</td>
-            <td>End Date</td>
-            <td>Applied Date</td>
-            <td>Status</td>
-            <td>Leave Type</td>
-            <td>Reason</td>
-            </tr>
+            <body className="bodystyle2">
+            <div className="cardtable">
+            <br></br>
+            <h1 className="textstyle">My Leaves</h1><br></br>
+            <table className="table">
+            <thead className="theadstyle">
+                <tr>
+     	            <th>Employee Id</th>
+     	            <th>Start Date</th>
+     	            <th>End Date</th>
+     	            <th>Applied Date</th>
+     	            <th>Status</th>
+		            <th>Leave Type</th>
+     	            <th>Reason</th>
+                    <th>Manager Comments</th>
+     	        </tr>
             </thead>
             <tbody>
+           
            
             {
                 
                 Leave.map((a) =>
+                    
+                    
+               
                     <tr>
-                    <td>{a.employeeId}</td>
+                   
+                    <td >{a.employeeId}</td>
                     <td>{a.startDate}</td>
                     <td>{a.endDate}</td>
                     <td>{a.appliedDate}</td>
                     <td>{a.status}</td>
                     <td>{a.leaveType}</td>
                     <td>{a.reason}</td>
+                   <td>{a.managerComments}</td>
                     </tr>
                     
+                  
+                   
                     )
                     
             }
@@ -66,8 +82,9 @@ export default class Showempleaves extends React.Component
             </tbody>
             
             </table>
+            
             </div>
-           
+            </body>
         )
     }
 }

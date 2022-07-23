@@ -27,8 +27,8 @@ export default class App extends React.Component{
       <div >
       
       <Routes>
-        <Route path="/" element={<Welcome/>}>Home</Route>
-        <Route path="/Login/:id" element={<Login />}>Login</Route>
+        <Route path="/AllEmployees" element={<Welcome/>}>Home</Route>
+        <Route path="/" element={<Login />}>Login</Route>
         <Route path="/ApplyLeave" element={<ApplyLeave/>}>ApplyLeave</Route>
         
         <Route path="/DashBoard/:id" element={<Dashboard  />}>DashBoard</Route>

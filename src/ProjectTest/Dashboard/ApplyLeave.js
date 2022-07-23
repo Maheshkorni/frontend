@@ -1,6 +1,9 @@
 import React from "react"
-import '/node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './ApplyLeave.css'
 import axios from 'axios'
+import { format, parseISO } from 'date-fns';
+import emaijs from 'emailjs-com'
+
 
 import { getCurrentDate } from "./DatePicker";
 
@@ -9,73 +12,193 @@ export default class ApplyLeave extends React.Component{
     {
         super();
         this.state={
-            employeeId:'',
+            employeeId:sessionStorage.getItem("id"),
             startDate:'',
             endDate:'',
             appliedDate:getCurrentDate("-"),
             noofdays:'',
-            Leavetype:'',
+            leavetype:'',
             reason:'',
-            status:'PENDING'
+            status:'PENDING',
+            startDateerror:"",
+            endDateerror:"",
+            Leavetypeerror:'',
+            reasonerror:'',
+            user_email:"kaminiswaroop2@gmail.com",
+            to_name:"Swaroop",
+            message:"its Working"
         }
         this.Apply=this.Apply.bind(this)
         this.handleChange=this.handleChange.bind(this)
+        this.calci=this.calci.bind(this)
+        this.Validate=this.Validate.bind(this)
+       
+    }
+    
+    calci()
+    {
+       
+       
+           
+            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            var diffDays = Math.abs((new Date(this.state.endDate).getTime() - new Date(this.state.startDate).getTime()) );
+            var ans=Math.ceil(diffDays/(oneDay))
+           this.setState({noofdays:ans+1})
+            console.log(ans)
+
+        
+        
+    }
+    Validate()
+    {
+       // console.log("Validate")
+      if(this.state.startDate==="")
+      {
+        this.setState({startDateerror:"Required"})
+        return false
+      }
+      else if(this.state.endDate==="")
+      {
+        this.setState({endDateerror:"Required"})
+        return false
+      }
+      else if(this.state.leavetype==="")
+      {
+        this.setState({Leavetypeerror:"Required"})
+        return false
+      }
+      else if(this.state.reason==="")
+      {
+        this.setState({reasonerror:"Required"})
+        return false
+      }
+      else{ 
+        this.setState({startDateerror:""})
+        this.setState({endDateerror:""})
+        this.setState({Leavetypeerror:""})
+        this.setState({Leavetypeerror:""})
+        this.setState({reasonerror:""})
+        return true
+    
+    }
     }
     handleChange(e)
     {
+       
         this.setState(e)
-     
+        this.calci()
+       
+       
+        if(new Date(e.startDate).getDay()== 6 || new Date(e.startDate).getDay() == 0)
+        {
+            this.setState({startDateerror:"start date must not be a weekend"})
+        }
+        else if(new Date(e.startDate)<new Date(getCurrentDate("-"))){this.setState({startDateerror:"start Date must not be in past"})}
+       
+        else if(new Date(e.endDate)<new Date(this.state.startDate)){this.setState({endDateerror:"end date cannot be less than start date"})}
+        else if(new Date(e.endDate).getDay()== 6 || new Date(e.endDate).getDay() == 0)
+        {
+            this.setState({endDateerror:"end date must not be a weekend"})
+        }
+        else if (e.reason.length<4){this.setState({reasonerror:"Reason must be greater than 4 characters"})}
+        else{ 
+            
+            this.setState({startDateerror:""})
+            this.setState({endDateerror:""})
+            //this.calci()
     }
-    Apply()
+    }
+    
+    Apply(e)
     {
-        let id=sessionStorage.getItem("id")
+        if(!this.Validate())
+        {
+            alert("Invalid Data")
+        }
+        else{
+            e.preventDefault()
         axios.post("http://localhost:18647/ApplyLeave",{
-            employeeId: id,
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
-            appliedDate: getCurrentDate("-"),
-            status: "PENDING",
-            reason: this.state.reason,
-            leaveType: this.state.Leavetype
-        }).then(reponse=>{alert("Leave Applied Successfully");window.location="/Dashboard/"+id}).catch(error=>{alert("Something Went Wrong")})
-       //
+                count:this.state.noofdays,
+                employeeId: this.state.employeeId,
+                startDate: this.state.startDate,
+                endDate: this.state.endDate,
+                appliedDate: this.state.appliedDate,
+                status: "PENDING",
+                reason: this.state.reason,
+                leaveType: this.state.leavetype,
+                managerComments:""}
+                ).then(reponse=>{alert("Leave Applied Successfully");window.location="/Dashboard/"+sessionStorage.getItem("id")}).catch(error=>{alert("Something Went Wrong")})
+
+                emaijs.sendForm('service_12kvvgf','template_ne6g25e',this.state,'QlLCh_JKTqs9VbZbJ')
+                .then((result)=>{console.log(result.text)}).catch(error=>{alert(" Wrong")})
         
         
+            }
+
+        
+       
+       
+        
+    }
+    componentDidMount()
+    {
+        if( sessionStorage.getItem("check")=="True")
+        {
+        console.log("Verified")
+        }
+        else{ window.location="/"}
     }
 
     render()
     {
-        const {leaves}=this.state
+       
         return(
             <>
-            <form>
-                <h1>Apply Leave</h1>
-
-                <div className="mb-3">
-                    <label className="form-label">StartDate</label>
-                    <input className="form-control" name="startDate" type="Date" onChange={(e) => this.handleChange({ startDate: e.target.value })} ></input>
+            <body className="bodystyle2" >
+            <div className="container">
+            <div className="title">Apply Leave</div>
+            <div className="content">
+                <form >
+                    <div className="user-details">
+                    <div className="input-box">
+                    <span className="details">Start Date</span>
+                    <input onClick={this.Validate} name="startDate" type="Date" id="d1" onChange={(e) => this.handleChange({ startDate: e.target.value })} required></input>
+                    <p style={{color:"red"}}>{this.state.startDateerror}</p>
+                    </div>
+                    <div className="input-box">
+                        <span className="details">End Date</span>
+                        <input onClick={this.Validate} className="form-control" id="d2" name="enddate" onChange={(e)=>{this.handleChange({endDate:e.target.value})}} type="Date" ></input>
+                    <p style={{color:"red"}}>{this.state.endDateerror}</p>
+                    </div>
+                    <div className="input-box">
+                    <span className="details">Number of days</span>
+                    <input  className="form-control" name="Days" value={this.state.noofdays} type="text" disabled></input>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">EndDate</label>
-                    <input className="form-control" name="enddate" onChange={(e)=>this.handleChange({endDate:e.target.value})} type="Date" ></input>
+                <div className="input-box">
+                    <span className="details">Leave Type</span>
+                    <select onClick={this.Validate} className="form-control" type="text" name="leavetype" onChange={(e)=>this.handleChange(this.setState({leavetype:e.target.value}))}>
+                    <option>None</option>
+                    <option>Casual Leave</option>
+                    <option>Earned Leave</option>
+                    <option>Maternity Leave</option>
+                    </select>
+                     <p style={{color:"red"}}>{this.state.Leavetypeerror}</p>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">No. of Days</label>
-                    <input className="form-control" name="Days"  type="text" ></input>
+    
+                <div className="input-box" >
+                    <span className="details">Reason</span>
+                    <input onClick={this.Validate} className="form-control" name="reason"  onChange={(e)=>this.handleChange({reason:e.target.value})} type="Text" ></input>
+                    <p style={{color:"red"}}>{this.state.reasonerror}</p>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Leave Type</label>
-                    <input className="form-control" name="Leavetype" onChange={(e)=>this.handleChange({Leavetype:e.target.value})} type="Text" ></input>
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Reason</label>
-                    <input className="form-control" name="reason"  onChange={(e)=>this.handleChange({reason:e.target.value})} type="Text" ></input>
-                    
-                </div>
-            </form>
-            <button className="btn btn-dark" onClick={this.Apply}>Submit</button><br></br>
-            <button className="btn btn-dark" onClick={()=>{window.location="/Dashboard/"+this.Apply.id}}>Cancel</button>
-            
+         </div> 
+        
+        <button className="button45" onClick={this.Apply}  >Submit</button>
+            <button className="button45" onClick={()=>{window.location="/Dashboard/"+sessionStorage.getItem("id")}}>Cancel</button>
+           
+</form>
+</div>
+</div>
+</body>           
             
             </>
         )
