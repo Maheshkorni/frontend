@@ -16,7 +16,7 @@ import EmployeeDetails from './ProjectTest/Dashboard/EmployeeDetails'
 import Showempleaves from './ProjectTest/Dashboard/Showempleaves'
 import ShowManagerDetails from './ProjectTest/Dashboard/ShowManagerDetails'
 import ShowMyempLeaves from './ProjectTest/Dashboard/ShowMyempLeaves'
-
+import ForgotPassword from './ProjectTest/ForgotPassword';
 
 export default class App extends React.Component{
   render(){
@@ -30,7 +30,7 @@ export default class App extends React.Component{
         <Route path="/AllEmployees" element={<Welcome/>}>Home</Route>
         <Route path="/" element={<Login />}>Login</Route>
         <Route path="/ApplyLeave" element={<ApplyLeave/>}>ApplyLeave</Route>
-        
+        <Route path='/ForgotPassword' element={<ForgotPassword />}>ForgotPassword</Route>
         <Route path="/DashBoard/:id" element={<Dashboard  />}>DashBoard</Route>
         <Route path="/EmployeeDetails" element={<EmployeeDetails/>}>EmployeeDetails</Route>
         <Route path="/ShowMyempLeaves" element={<ShowMyempLeaves/>}>ShowMyempLeaves</Route>

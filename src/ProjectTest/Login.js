@@ -100,7 +100,7 @@ export default class Login extends Component{
             <p style={{color:"red"}}>{this.state.employeeIderror}</p>
             <input type="password" placeholder="Password" name="password"  onChange={(e) => this.Handler({ password: e.target.value },e)} noValidate/>
             <p style={{color:"red"}}>{this.state.passworderror}</p>
-            <a href="#">Forgot your password?</a>
+            <a href="/ForgotPassword">Forgot your password?</a>
             <br></br>
             <button className="button1" type="submit" onClick={this.Login}>Log In</button>
         </form>

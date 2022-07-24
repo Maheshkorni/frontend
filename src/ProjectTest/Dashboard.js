@@ -46,7 +46,12 @@ export default class Dashboard extends React.Component
                     'MaternityLeaves' :response.data.maternityLeaves
                     
     
-                                    })}).catch(error=>{alert("error")})
+                                    });sessionStorage.setItem("name",response.data.fullName)
+                                    sessionStorage.setItem("email",response.data.email)
+                                
+                                }).catch(error=>{alert("error")})
+                
+                
                                  
                                 }
                                 else{ window.location="/"}

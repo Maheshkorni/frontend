@@ -2,7 +2,7 @@ import React from "react"
 import './ApplyLeave.css'
 import axios from 'axios'
 import { format, parseISO } from 'date-fns';
-import emaijs from 'emailjs-com'
+import emailjs from 'emailjs-com'
 
 
 import { getCurrentDate } from "./DatePicker";
@@ -24,9 +24,9 @@ export default class ApplyLeave extends React.Component{
             endDateerror:"",
             Leavetypeerror:'',
             reasonerror:'',
-            user_email:"kaminiswaroop2@gmail.com",
-            to_name:"Swaroop",
-            message:"its Working"
+            email:sessionStorage.getItem("email"),
+            name:sessionStorage.getItem("name")
+            
         }
         this.Apply=this.Apply.bind(this)
         this.handleChange=this.handleChange.bind(this)
@@ -128,10 +128,22 @@ export default class ApplyLeave extends React.Component{
                 leaveType: this.state.leavetype,
                 managerComments:""}
                 ).then(reponse=>{alert("Leave Applied Successfully");window.location="/Dashboard/"+sessionStorage.getItem("id")}).catch(error=>{alert("Something Went Wrong")})
+//'service_12kvvgf','template_ne6g25e',this.state,'QlLCh_JKTqs9VbZbJ'
+var templateParams = {
+    user_email:this.state.email,
+    to_name:this.state.name,
+    message:this.state.leavetype+" Applied successfully from "+this.state.startDate+" to "+this.state.endDate
+  };
 
-                emaijs.sendForm('service_12kvvgf','template_ne6g25e',this.state,'QlLCh_JKTqs9VbZbJ')
-                .then((result)=>{console.log(result.text)}).catch(error=>{alert(" Wrong")})
-        
+  
+  emailjs.send('service_12kvvgf', 'template_ne6g25e', templateParams,'QlLCh_JKTqs9VbZbJ')
+    .then(function(response) {
+      console.log('SUCCESS!', response.status, response.text);
+    }, function(error) {
+      console.log('FAILED...', error);
+    });
+              
+                
         
             }
 
@@ -145,6 +157,7 @@ export default class ApplyLeave extends React.Component{
         if( sessionStorage.getItem("check")=="True")
         {
         console.log("Verified")
+        console.log(sessionStorage.getItem("email"))
         }
         else{ window.location="/"}
     }
